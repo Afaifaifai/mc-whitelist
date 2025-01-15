@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        .form-container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #218838;
+        }
+        .message {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Game Authentication</h2>
+        <div class="form-group">
+            <label for="authPassword">Authentication Password:</label>
+            <input type="password" id="authPassword" placeholder="Enter authentication password">
+        </div>
+        <div class="form-group">
+            <label for="gameId">Game ID:</label>
+            <input type="text" id="gameId" placeholder="Enter game ID">
+        </div>
+        <div class="form-group">
+            <button id="submitBtn">Submit</button>
+        </div>
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:25566/api'
+        document.getElementById('submitBtn').addEventListener('click', async () => {
+            const authPassword = document.getElementById('authPassword').value;
+            const gameId = document.getElementById('gameId').value;
+
+            if (!authPassword || !gameId) {
+                document.getElementById('message').textContent = 'Please fill out all fields!';
+                document.getElementById('message').style.color = 'red';
+                return;
+            }
+
+            const payload = {
+                "auth_password" : authPassword,
+                "player_id" : gameId
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const response_data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('message').textContent = 'Authentication successful!';
+                    document.getElementById('message').style.color = 'green';
+                } else {
+                    document.getElementById('message').textContent = `Authentication failed: ${response_data.error}`;
+                    document.getElementById('message').style.color = 'red';
+                }
+            } catch (error) {
+                document.getElementById('message').textContent = 'Server error, please try again later!';
+                document.getElementById('message').style.color = 'red';
+            }
+        });
+    </script>
+</body>
+</html>
