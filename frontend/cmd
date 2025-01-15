@@ -1,6 +1,6 @@
 docker run -d \
     --name my-nginx \
     -p 25566:80 \
-    -v ./index.html:/usr/share/nginx/html:ro \
+    -v ./html:/usr/share/nginx/html:ro \
     -v ./nginx.conf:/etc/nginx/conf.d/default.conf:ro \
     nginx
