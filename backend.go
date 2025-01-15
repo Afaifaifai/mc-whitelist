@@ -82,11 +82,11 @@ func enable_CORS(next http.Handler) http.Handler {
 
 // 通用 API 處理器
 func api_handler(w http.ResponseWriter, r *http.Request) {
-	clientIP := strings.Split(r.RemoteAddr, ":")[0] // 分割 RemoteAddr，取得 IP 部分
-	if clientIP != ALLOW_IP {                       // 只允許 IPv4 和 IPv6 本地 IP
-		log.Printf("Access denied: Client IP %s is not localhost", clientIP)
-		return // 不進一步處理，也不回應攻擊者
-	}
+	// clientIP := strings.Split(r.RemoteAddr, ":")[0] // 分割 RemoteAddr，取得 IP 部分
+	// if clientIP != ALLOW_IP {                       // 只允許 IPv4 和 IPv6 本地 IP
+	// 	log.Printf("Access denied: Client IP %s is not localhost", clientIP)
+	// 	return // 不進一步處理，也不回應攻擊者
+	// }
 
 	// Get the API path, for example, /api/fruits -> fruits
 	fmt.Println(r.URL.Path)
